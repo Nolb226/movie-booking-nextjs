@@ -38,7 +38,7 @@ function MovieCard({
                 <Star className="size-4 fill-yellow-400 text-yellow-400" />
                 <p className="text-[#C3C3C3]">{rating}</p>
             </div>
-            <Button hasIcon variant="highlight">
+            <Button hasIcon variant="secondary">
                 <Ticket className="size-4" />
                 Buy Ticket
             </Button>
