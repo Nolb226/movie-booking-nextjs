@@ -4,6 +4,7 @@ import './globals.css'
 import Footer from '@/components/layouts/footer'
 import Header from '@/components/layouts/header'
 import { cn } from '@/lib/utils'
+import { TailwindIndicator } from '@/components/tailwind-indicator'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,6 +24,7 @@ export default function RootLayout({
                 <Header />
                 {children}
                 <Footer />
+                <TailwindIndicator />
             </body>
         </html>
     )

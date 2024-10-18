@@ -10,7 +10,7 @@ const buttonVariants = cva(
         variants: {
             variant: {
                 default:
-                    'hover:shadow-hover bg-primary-500 text-neutral-50 focus-visible:ring-white active:shadow-none disabled:bg-primary-800 disabled:text-primary-700',
+                    'bg-primary-500 text-neutral-50 hover:shadow-hover focus-visible:ring-white active:shadow-none disabled:bg-primary-800 disabled:text-primary-700',
                 destructive:
                     'bg-red-500 text-neutral-50 hover:bg-red-500/90 dark:bg-red-900 dark:text-neutral-50 dark:hover:bg-red-900/90',
                 outline:
@@ -21,6 +21,8 @@ const buttonVariants = cva(
                 link: 'text-neutral-900 underline-offset-4 hover:underline dark:text-neutral-50',
                 highlight:
                     'bg-highlight-500 text-white hover:bg-highlight-600 focus-visible:ring-white active:bg-highlight-500 disabled:bg-highlight-500 disabled:text-highlight-300',
+                showtime:
+                    'bg-white/[8%] px-4 py-3 text-slate-50 ring-1 ring-inset ring-slate-800',
             },
             size: {
                 default: 'py-2',
