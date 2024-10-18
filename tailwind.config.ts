@@ -63,10 +63,13 @@ const config: Config = {
             },
             spacing: {
                 '3.75': '15px',
+                '5.5': '22px',
                 '7.5': '30px',
                 '8.5': '34px',
                 '9.5': '38px',
                 '10.5': '42px',
+                '31.5': '7.875rem',
+                '55': '13.75rem',
             },
             keyframes: {
                 'accordion-down': {
