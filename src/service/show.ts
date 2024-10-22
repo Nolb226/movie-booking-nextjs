@@ -1,7 +1,7 @@
 import { endpoint, ENDPOINTS } from '@/constants/endpoint'
-import { get } from '@/lib/api'
+import { get, getPublic } from '@/lib/api'
 import { ShowSeat } from '@/model/show'
 
 export const getShowSeat = (id: string) => {
-    return get<ShowSeat>(endpoint(ENDPOINTS.SHOW.SEAT, { SHOW: id }))
+    return getPublic<ShowSeat>(endpoint(ENDPOINTS.SHOW.SEAT, { SHOW: id }))
 }

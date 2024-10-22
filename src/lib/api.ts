@@ -103,6 +103,14 @@ export const get = <T>(
     return request<T>(url, options, others)
 }
 
+export const getPublic = <T>(
+    url: string,
+    options?: FetchOptionType,
+    others?: IOtherOptions
+) => {
+    return get<T>(url, options, { isPublicApi: true, ...others })
+}
+
 export const post = <T>(
     url: string,
     options?: FetchOptionType,

@@ -1,6 +1,6 @@
 import { ENDPOINTS } from '@/constants/endpoint'
-import { get } from '@/lib/api'
+import { getPublic } from '@/lib/api'
 
 export const getCinema = () => {
-    return get<Location[]>(ENDPOINTS.CINEMA.LIST)
+    return getPublic<Location[]>(ENDPOINTS.CINEMA.LIST)
 }
