@@ -22,7 +22,7 @@ export const ENDPOINTS = {
         DETAIL: '',
     },
     SHOW: {
-        SEAT: `/shows/${PARAMS.SHOW}/seats`,
+        SEAT: `/showtimes/${PARAMS.SHOW}/seats`,
     },
 }
 

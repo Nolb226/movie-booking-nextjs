@@ -1,6 +1,6 @@
 import { Movie } from './movie'
 
-export type Location = {
+export type City = {
     id: string
     name: string
     slug: string
@@ -12,4 +12,22 @@ export type Cinema = {
     name: string
     slug: string
     movies: Movie[]
+    hall: Hall
+}
+
+export type Hall = {
+    id: string
+    name: string
+    totalSeats: number
+    availableSeats: number
+    seats: Seat[]
+}
+
+export type Seat = {
+    id: string
+    status: boolean
+    rowIndex: number
+    rowName: string
+    order: number
+    isReserved: boolean
 }

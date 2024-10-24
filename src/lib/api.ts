@@ -13,7 +13,7 @@ const ContentType = {
 const baseOptions = {
     method: 'GET',
     mode: 'cors',
-    credentials: 'include',
+    // credentials: 'include',
     headers: new Headers({
         'Content-type': ContentType.json,
     }),
@@ -41,7 +41,7 @@ const baseFetch = <T>(
         baseOptions,
         fetchOptions
     )
-    const urlPrefix = env.MOVIE_API_URL
+    const urlPrefix = env.NEXT_PUBLIC_MOVIE_API_URL
     let urlWithPrefix = `${urlPrefix}${url.startsWith('/') ? url : `/${url}`}`
 
     const { method, params, body } = options
