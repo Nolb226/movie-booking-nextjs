@@ -70,10 +70,10 @@ const baseFetch = <T>(
         }),
         new Promise(async (resolve, reject) => {
             try {
-                const response = await fetch(
-                    urlWithPrefix,
-                    options as RequestInit
-                )
+                const response = await fetch(urlWithPrefix, {
+                    // cache: 'no-cache',
+                    ...options,
+                } as RequestInit)
                 if (response.status === 204) {
                     resolve({ result: 'success' })
                     return

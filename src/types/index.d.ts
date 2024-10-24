@@ -4,3 +4,5 @@ export type SiteConfig = {
     url: string
     ogImage: string
 }
+
+export type PaginationParams = { page: number; perPage: number }

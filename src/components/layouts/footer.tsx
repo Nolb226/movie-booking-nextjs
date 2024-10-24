@@ -4,8 +4,8 @@ import React from 'react'
 
 function Footer() {
     return (
-        <footer className="py-7.5 bg-black text-white">
-            <div className="mx-auto flex w-[1440px] flex-col gap-5">
+        <footer className="bg-black py-7.5 text-white">
+            <div className="mx-auto flex max-w-[1440px] flex-col gap-5">
                 <div className="flex items-center justify-between py-1.5">
                     <div className="w-[200px]">
                         <img
@@ -14,7 +14,7 @@ function Footer() {
                             alt=""
                         />
                     </div>
-                    <div className="gap-3.75 flex">
+                    <div className="flex gap-3.75">
                         <Link
                             href={'/'}
                             className="flex size-[41px] items-center justify-center rounded-full border border-white"

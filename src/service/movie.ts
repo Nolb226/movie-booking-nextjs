@@ -1,12 +1,17 @@
+import { basePagination } from '@/config/params'
 import { ENDPOINTS, endpoint } from '@/constants/endpoint'
 import { getPublic } from '@/lib/api'
 import { Movie, MovieStatus } from '@/model/movie'
+import { PaginationParams } from '@/types'
 
-export const getMovies = (status: MovieStatus = 'showing-now') => {
+export const getMovies = (
+    status: MovieStatus = 'showing-now',
+    options?: PaginationParams
+) => {
     return getPublic<Movie[]>(ENDPOINTS.MOVIE.STATUS[status], {
         params: {
-            page: 1,
-            perPage: 12,
+            ...basePagination,
+            ...options,
         },
     })
 }
