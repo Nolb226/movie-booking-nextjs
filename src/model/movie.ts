@@ -1,3 +1,4 @@
+import { Cinema } from './cinema'
 import { Show } from './show'
 
 export type Movie = {
@@ -34,4 +35,12 @@ export type MovieGenre = {
     id: number
     name: string
     slug: string
+}
+
+export type MovieDetails = Movie & {
+    cinemas: [
+        Cinema & {
+            formats: MovieFormat[]
+        },
+    ]
 }

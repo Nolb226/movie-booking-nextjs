@@ -11,7 +11,7 @@ export type Cinema = {
     id: string
     name: string
     slug: string
-    movies: Movie[]
+    // movies: Movie[]
     hall: Hall
 }
 

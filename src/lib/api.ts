@@ -1,5 +1,6 @@
 import { resolve } from 'path'
 import { env } from '../../env.mjs'
+import { notFound } from 'next/navigation'
 
 const ContentType = {
     json: 'application/json',
@@ -71,9 +72,14 @@ const baseFetch = <T>(
         new Promise(async (resolve, reject) => {
             try {
                 const response = await fetch(urlWithPrefix, {
-                    // cache: 'no-cache',
+                    cache: 'no-cache',
                     ...options,
                 } as RequestInit)
+                switch (response.status) {
+                    case 404:
+                        notFound()
+                }
+
                 if (response.status === 204) {
                     resolve({ result: 'success' })
                     return

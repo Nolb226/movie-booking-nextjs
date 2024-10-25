@@ -1,7 +1,7 @@
 import { basePagination } from '@/config/params'
 import { ENDPOINTS, endpoint } from '@/constants/endpoint'
 import { getPublic } from '@/lib/api'
-import { Movie, MovieStatus } from '@/model/movie'
+import { Movie, MovieDetails, MovieStatus } from '@/model/movie'
 import { PaginationParams } from '@/types'
 
 export const getMovies = (
@@ -17,5 +17,7 @@ export const getMovies = (
 }
 
 export const getMovieDetail = (slug: string) => {
-    return getPublic<Movie>(endpoint(ENDPOINTS.MOVIE.DETAIL, { MOVIE: slug }))
+    return getPublic<MovieDetails>(
+        endpoint(ENDPOINTS.MOVIE.DETAIL, { MOVIE: slug })
+    )
 }

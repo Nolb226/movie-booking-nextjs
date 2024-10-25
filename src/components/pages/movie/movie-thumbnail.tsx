@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { ChevronRight } from 'lucide-react'
+import Link from 'next/link'
 import React from 'react'
 
 interface MovieThumbnailProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -16,7 +17,8 @@ function MovieThumbnail({
     slug,
 }: MovieThumbnailProps) {
     return (
-        <div
+        <Link
+            href={`/movie/${slug}`}
             style={{
                 backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('${horizontalPoster}')`,
             }}
@@ -34,7 +36,7 @@ function MovieThumbnail({
                     </Button>
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }
 

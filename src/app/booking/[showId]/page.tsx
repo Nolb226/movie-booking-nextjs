@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/button'
 import { getShowSeat } from '@/service/show'
 import React from 'react'
 
-async function Page({ params }: { params: { id: string } }) {
-    const data = await getShowSeat(params.id)
+async function Page({ params }: { params: { showId: string } }) {
+    const data = await getShowSeat(params.showId)
 
     return (
         <>
