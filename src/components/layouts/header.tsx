@@ -9,26 +9,12 @@ import {
 import Link from 'next/link'
 import SearchBar from '../search-bar'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
-
-const navigations = [
-    {
-        href: '/movie',
-        label: 'Movies',
-    },
-    {
-        href: '/cinema',
-        label: 'Cinema',
-    },
-    {
-        href: '/blogs',
-        label: 'Blogs',
-    },
-]
+import { NAVIGATIONS } from '@/config/navigation'
 
 function Header() {
     return (
         <header className="bg-black">
-            <div className="mx-auto flex w-[1440px] items-center gap-6 py-4">
+            <div className="mx-auto flex max-w-[1440px] items-center gap-6 py-4">
                 <div className="w-[132px]">
                     <Link href="/">
                         <img src="/images/logo.png" alt="" />
@@ -36,7 +22,7 @@ function Header() {
                 </div>
                 <NavigationMenu>
                     <NavigationMenuList className="flex gap-2">
-                        {navigations.map(({ href, label }) => (
+                        {NAVIGATIONS.map(({ href, label }) => (
                             <NavigationMenuItem key={label}>
                                 <Link href={href} legacyBehavior passHref>
                                     <NavigationMenuLink>

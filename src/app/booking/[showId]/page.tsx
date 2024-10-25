@@ -1,9 +1,12 @@
 import Screen from '@/components/pages/booking/screen'
 import Seats from '@/components/pages/booking/seats'
 import { Button } from '@/components/ui/button'
+import { getShowSeat } from '@/service/show'
 import React from 'react'
 
-function Page() {
+async function Page({ params }: { params: { showId: string } }) {
+    const data = await getShowSeat(params.showId)
+
     return (
         <>
             <div className="flex w-9/12 flex-col justify-center gap-8 rounded-lg bg-white/[4%] ring-1 ring-inset ring-primary-900">
@@ -18,7 +21,7 @@ function Page() {
                 </div>
                 <div className="flex flex-col gap-3 px-5.5 pb-8">
                     <div className="relative flex items-center justify-center">
-                        <Seats />
+                        <Seats seats={data.hall.seats} />
                     </div>
                     <Screen />
                     <div className="flex items-center gap-4">

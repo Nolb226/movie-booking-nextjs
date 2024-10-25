@@ -63,6 +63,7 @@ const config: Config = {
             },
             spacing: {
                 '3.75': '15px',
+                '4.5': '18px',
                 '5.5': '22px',
                 '7.5': '30px',
                 '8.5': '34px',

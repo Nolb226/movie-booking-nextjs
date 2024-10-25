@@ -1,8 +1,10 @@
+import { Cinema } from './cinema'
 import { Show } from './show'
 
 export type Movie = {
     id: string
     name: string
+    subName: string
     description: string
     slug: string
     sumOfRating: number
@@ -17,6 +19,7 @@ export type Movie = {
     status: MovieStatus
     producer: string
     formats: MovieFormat[]
+    genres: MovieGenre[]
 }
 
 export type MovieStatus = 'showing-now' | 'coming-soon'
@@ -26,4 +29,18 @@ export type MovieFormat = {
     caption: string
     version: string
     shows: Show[]
+}
+
+export type MovieGenre = {
+    id: number
+    name: string
+    slug: string
+}
+
+export type MovieDetails = Movie & {
+    cinemas: [
+        Cinema & {
+            formats: MovieFormat[]
+        },
+    ]
 }
