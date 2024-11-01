@@ -11,10 +11,10 @@ interface MovieCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 function MovieCard({
-    poster = 'https://media.discordapp.net/attachments/1157346998136090685/1179937226986094683/VerticalPoster01.png?ex=670a66ed&is=6709156d&hm=dfe8206c5c7639b216058450eb4dbfd3c0c0044a1d1e6b599bab92b73d290471&=&format=webp&quality=lossless',
-    name = 'Star Wars: Episode V - The Empire Strikes',
-    slug = 'a-haunting-in-venice',
-    rating = 8.3,
+    poster,
+    slug,
+    name,
+    rating,
     className,
     ...props
 }: MovieCardProps) {

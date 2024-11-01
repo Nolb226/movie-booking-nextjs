@@ -9,19 +9,24 @@ import { getCinema } from '@/service/cinema'
 import { createContext, useContext, useEffect, useState } from 'react'
 
 type BookingContextState = {
-    cinema: Cinema | undefined
+    seats: Seat[]
     movie: Movie | undefined
+    cinema: (Cinema & { movies: Movie[] }) | undefined
     full_data: City[]
-    selectCinema: (cityNum: number, cinemaNum: number) => void
+
+    selectSeat: (seat: Seat) => void
     selectMovie: (movieNum: number) => void
+    selectCinema: (cityNum: number, cinemaNum: number) => void
 }
 
 const BookingContext = createContext<BookingContextState>({
-    full_data: [],
+    seats: [],
     movie: undefined,
     cinema: undefined,
-    selectCinema: () => {},
+    full_data: [],
+    selectSeat: () => {},
     selectMovie: () => {},
+    selectCinema: () => {},
 })
 
 export const useBookingContext = () => useContext(BookingContext)
@@ -30,11 +35,14 @@ interface BookingContextProviderProps {
     children: React.ReactNode
 }
 
+type CinemaWithMovies = Cinema & { movies: Movie[] }
+
 const BookingProvider = ({ children }: BookingContextProviderProps) => {
-    const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [cinema, setCinema] = useState<Cinema>()
-    const [movie, setMovie] = useState<Movie>()
     const [data, setData] = useState<City[]>([])
+    const [seats, setSeats] = useState<Seat[]>([])
+    const [movie, setMovie] = useState<Movie>()
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [cinema, setCinema] = useState<CinemaWithMovies>()
 
     const fetchData = async () => {
         try {
@@ -48,15 +56,26 @@ const BookingProvider = ({ children }: BookingContextProviderProps) => {
         }
     }
 
-    const selectCinema = (cityNum: number, cinemaNum: number) => {
-        const cinema = data[cityNum].cinemas[cinemaNum]
-        setCinema({ ...cinema })
-        // const movie = cinema?.movies[0]
-        setMovie(undefined)
+    const selectSeat = (seat: Seat) => {
+        setSeats((prevSeats) => {
+            const seatExists = prevSeats.some((s) => s.id === seat.id)
+            if (seatExists) {
+                return prevSeats.filter((s) => s.id !== seat.id)
+            } else {
+                return [...prevSeats, seat]
+            }
+        })
     }
 
     const selectMovie = (movieNum: number) => {
         setMovie(cinema!.movies[movieNum] || {})
+    }
+
+    const selectCinema = (cityNum: number, cinemaNum: number) => {
+        const cinema = data[cityNum].cinemas[cinemaNum] as CinemaWithMovies
+        setCinema({ ...cinema })
+        // const movie = cinema?.movies[0]
+        setMovie(undefined)
     }
 
     useEffect(() => {
@@ -67,11 +86,13 @@ const BookingProvider = ({ children }: BookingContextProviderProps) => {
         <BookingContext.Provider
             value={
                 {
-                    full_data: data,
+                    seats,
                     movie,
                     cinema,
-                    selectCinema,
+                    full_data: data,
+                    selectSeat,
                     selectMovie,
+                    selectCinema,
                 } as BookingContextState
             }
         >

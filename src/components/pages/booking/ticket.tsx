@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { useBookingContext } from '@/context/booking-context'
 
 export default function Ticket() {
-    const { cinema, movie } = useBookingContext()
+    const { cinema, movie, seats } = useBookingContext()
     return (
         <aside className="flex h-fit w-3/12 flex-col divide-y divide-dashed divide-primary-850 rounded-lg bg-white/[4%] px-7.5 py-2.5 ring-1 ring-inset ring-primary-900">
             <div className="flex gap-4 py-3.75">
@@ -34,10 +34,12 @@ export default function Ticket() {
                 </div>
                 <div className="">
                     <p className="text-[15px] font-semibold uppercase">
-                        Ghế (2)
+                        Ghế ({seats.length})
                     </p>
-                    <span className="text-sm uppercase text-slate-400">
-                        J12, J13
+                    <span className="block min-h-4.5 text-sm uppercase text-slate-400">
+                        {seats
+                            .map((seat) => `${seat.rowName}${seat.rowIndex}`)
+                            .join(', ')}
                     </span>
                 </div>
             </div>
