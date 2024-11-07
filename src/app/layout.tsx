@@ -21,9 +21,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={cn('bg-primary-950 text-white', inter.className)}>
-                <Header />
                 {children}
-                <Footer />
                 <TailwindIndicator />
             </body>
         </html>

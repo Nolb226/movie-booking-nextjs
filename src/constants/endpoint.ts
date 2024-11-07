@@ -6,9 +6,12 @@ export const PARAMS = {
 
 export const ENDPOINTS = {
     AUTH: {
-        LOGIN: '',
+        LOGIN: '/auth/login',
         REGISTER: '',
-        PROFILE: '',
+        PROFILE: '/user/profile',
+        BILLING: '/bills/curr-user',
+        BILLING_DETAILS: `/bills/curr-user/${PARAMS.BILLING}`,
+        CHANGE_PASSWORD: '/user/change-password',
     },
     MOVIE: {
         STATUS: {
