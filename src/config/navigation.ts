@@ -12,3 +12,6 @@ export const NAVIGATIONS = [
         label: 'Blogs',
     },
 ]
+
+export const protectedRoutes = ['/booking', '/profile']
+export const publicRoutes = ['/login', '/signup']

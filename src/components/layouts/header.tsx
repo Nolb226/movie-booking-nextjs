@@ -10,8 +10,13 @@ import Link from 'next/link'
 import SearchBar from '../search-bar'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { NAVIGATIONS } from '@/config/navigation'
+import { Dialog } from '../ui/dialog'
+import { Button } from '../ui/button'
+import ProfileDropdown from '../profile-dropdown'
+import { cookies } from 'next/headers'
 
-function Header() {
+async function Header() {
+    const session = cookies().get('_session')?.value
     return (
         <header className="bg-black">
             <div className="mx-auto flex max-w-[1440px] items-center gap-6 py-4">
@@ -21,7 +26,7 @@ function Header() {
                     </Link>
                 </div>
                 <NavigationMenu>
-                    <NavigationMenuList className="flex gap-2">
+                    <NavigationMenuList className="flex items-center gap-2">
                         {NAVIGATIONS.map(({ href, label }) => (
                             <NavigationMenuItem key={label}>
                                 <Link href={href} legacyBehavior passHref>
@@ -34,10 +39,13 @@ function Header() {
                     </NavigationMenuList>
                 </NavigationMenu>
                 <SearchBar />
-                <Avatar className="size-8">
-                    <AvatarImage src="https://github.com/nolb226.png" />
-                    <AvatarFallback>NT</AvatarFallback>
-                </Avatar>
+                {session ? (
+                    <ProfileDropdown />
+                ) : (
+                    <Button variant="secondary" asChild className="text-sm">
+                        <Link href={'/login'}>Đăng nhập</Link>
+                    </Button>
+                )}
             </div>
         </header>
     )

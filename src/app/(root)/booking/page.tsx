@@ -71,7 +71,7 @@ export default function Page() {
                         Movie
                     </AccordionTrigger>
                     <AccordionContent className="flex flex-wrap gap-4 bg-white/[4%] px-8 pt-5.5">
-                        {cinema?.movies.map((m, movieNum) => {
+                        {/* {cinema?.movies.map((m, movieNum) => {
                             return (
                                 <MovieCard
                                     onClick={() => selectMovie(movieNum)}
@@ -88,7 +88,7 @@ export default function Page() {
                                     })}
                                 ></MovieCard>
                             )
-                        })}
+                        })} */}
                     </AccordionContent>
                 </AccordionItem>
                 <AccordionItem

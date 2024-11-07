@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { cookies } from 'next/headers'
 import { env } from '../../env.mjs'
 import { notFound } from 'next/navigation'
 
@@ -63,6 +63,11 @@ const baseFetch = <T>(
 
     if (body) options.body = JSON.stringify(body)
 
+    if (!isPublicApi) {
+        const token = cookies().get('_session')?.value
+        options.headers.set('Authorization', `Bearer ${token}`)
+    }
+
     return Promise.race([
         new Promise((_, reject) => {
             setTimeout(() => {
@@ -72,13 +77,13 @@ const baseFetch = <T>(
         new Promise(async (resolve, reject) => {
             try {
                 const response = await fetch(urlWithPrefix, {
-                    cache: 'no-cache',
+                    // cache: 'no-cache',
                     ...options,
                 } as RequestInit)
-                switch (response.status) {
-                    case 404:
-                        notFound()
-                }
+                // switch (response.status) {
+                //     case 404:
+                //         notFound()
+                // }
 
                 if (response.status === 204) {
                     resolve({ result: 'success' })
@@ -123,6 +128,14 @@ export const post = <T>(
     others?: IOtherOptions
 ) => {
     return request<T>(url, { method: 'POST', ...options }, others)
+}
+
+export const postPublic = <T>(
+    url: string,
+    options?: FetchOptionType,
+    others?: IOtherOptions
+) => {
+    return post<T>(url, options, { isPublicApi: true, ...others })
 }
 
 export const put = <T>(

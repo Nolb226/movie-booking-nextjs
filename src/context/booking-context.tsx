@@ -38,11 +38,13 @@ const BookingProvider = ({ children }: BookingContextProviderProps) => {
 
     const fetchData = async () => {
         try {
-            const data = await getCinema()
+            const data: City[] = await fetch(
+                `${env.NEXT_PUBLIC_MOVIE_API_URL}/${ENDPOINTS.CINEMA.LIST}`
+            ).then((res) => res.json())
             setIsLoading(false)
             setData(data)
             setCinema(data[0].cinemas[0])
-            setMovie(data[0].cinemas[0]?.movies[0] || {})
+            // setMovie(data[0].cinemas[0]?.movies[0] || {})
         } catch (error) {
             console.log(error)
         }
@@ -56,7 +58,7 @@ const BookingProvider = ({ children }: BookingContextProviderProps) => {
     }
 
     const selectMovie = (movieNum: number) => {
-        setMovie(cinema!.movies[movieNum] || {})
+        // setMovie(cinema!.movies[movieNum] || {})
     }
 
     useEffect(() => {
