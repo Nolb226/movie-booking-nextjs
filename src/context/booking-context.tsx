@@ -9,77 +9,108 @@ import { getCinema } from '@/service/cinema'
 import { createContext, useContext, useEffect, useState } from 'react'
 
 type BookingContextState = {
-    cinema: Cinema | undefined
-    movie: Movie | undefined
-    full_data: City[]
-    selectCinema: (cityNum: number, cinemaNum: number) => void
-    selectMovie: (movieNum: number) => void
+   seats: Seat[]
+   movie: Movie | undefined
+   cinema: (Cinema & { movies: Movie[] }) | undefined
+   full_data: City[]
+
+   selectSeat: (seat: Seat) => void
+   selectMovie: (movie: Movie) => void
+   selectCinema: (cinema: CinemaWithMovies) => void
 }
 
 const BookingContext = createContext<BookingContextState>({
-    full_data: [],
-    movie: undefined,
-    cinema: undefined,
-    selectCinema: () => {},
-    selectMovie: () => {},
+   seats: [],
+   movie: undefined,
+   cinema: undefined,
+   full_data: [],
+   selectSeat: () => {},
+   selectMovie: () => {},
+   selectCinema: () => {},
 })
 
 export const useBookingContext = () => useContext(BookingContext)
 
 interface BookingContextProviderProps {
-    children: React.ReactNode
+   children: React.ReactNode
 }
 
+type CinemaWithMovies = Cinema & { movies: Movie[] }
+
 const BookingProvider = ({ children }: BookingContextProviderProps) => {
-    const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [cinema, setCinema] = useState<Cinema>()
-    const [movie, setMovie] = useState<Movie>()
-    const [data, setData] = useState<City[]>([])
+   const [data, setData] = useState<City[]>([])
+   const [seats, setSeats] = useState<Seat[]>([])
+   const [movie, setMovie] = useState<Movie>()
+   const [isLoading, setIsLoading] = useState<boolean>(true)
+   const [cinema, setCinema] = useState<CinemaWithMovies>()
 
-    const fetchData = async () => {
-        try {
-            const data: City[] = await fetch(
-                `${env.NEXT_PUBLIC_MOVIE_API_URL}/${ENDPOINTS.CINEMA.LIST}`
-            ).then((res) => res.json())
-            setIsLoading(false)
-            setData(data)
-            setCinema(data[0].cinemas[0])
-            // setMovie(data[0].cinemas[0]?.movies[0] || {})
-        } catch (error) {
-            console.log(error)
-        }
-    }
+   const fetchData = async () => {
+      try {
+         const data = await getCinema()
+         setIsLoading(false)
+         setData(data)
+         setCinema(data[0].cinemas[0])
+         setMovie(data[0].cinemas[0]?.movies[0] || {})
+      } catch (error) {
+         console.log(error)
+      }
+   }
+   const fetchData = async () => {
+      try {
+         const data: City[] = await fetch(
+            `${env.NEXT_PUBLIC_MOVIE_API_URL}/${ENDPOINTS.CINEMA.LIST}`
+         ).then((res) => res.json())
+         setIsLoading(false)
+         setData(data)
+         setCinema(data[0].cinemas[0])
+         // setMovie(data[0].cinemas[0]?.movies[0] || {})
+      } catch (error) {
+         console.log(error)
+      }
+   }
 
-    const selectCinema = (cityNum: number, cinemaNum: number) => {
-        const cinema = data[cityNum].cinemas[cinemaNum]
-        setCinema({ ...cinema })
-        // const movie = cinema?.movies[0]
-        setMovie(undefined)
-    }
+   const selectSeat = (seat: Seat) => {
+      setSeats((prevSeats) => {
+         const seatExists = prevSeats.some((s) => s.id === seat.id)
+         if (seatExists) {
+            return prevSeats.filter((s) => s.id !== seat.id)
+         } else {
+            return [...prevSeats, seat]
+         }
+      })
+   }
 
-    const selectMovie = (movieNum: number) => {
-        // setMovie(cinema!.movies[movieNum] || {})
-    }
+   const selectMovie = (movie: Movie) => {
+      setMovie({ ...movie })
+   }
 
-    useEffect(() => {
-        fetchData()
-    }, [])
+   const selectCinema = (cinema: CinemaWithMovies) => {
+      setCinema({ ...cinema })
 
-    return (
-        <BookingContext.Provider
-            value={
-                {
-                    full_data: data,
-                    movie,
-                    cinema,
-                    selectCinema,
-                    selectMovie,
-                } as BookingContextState
-            }
-        >
-            {children}
-        </BookingContext.Provider>
-    )
+      setMovie(undefined)
+   }
+
+   useEffect(() => {
+      fetchData()
+   }, [])
+
+   return (
+      <BookingContext.Provider
+         value={
+            {
+               seats,
+               movie,
+               cinema,
+               full_data: data,
+               selectSeat,
+               selectMovie,
+               selectCinema,
+            } as BookingContextState
+         }
+      >
+         {children}
+      </BookingContext.Provider>
+   )
 }
 
 export { BookingProvider }
