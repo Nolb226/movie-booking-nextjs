@@ -1,3 +1,4 @@
+'use server'
 import { cookies } from 'next/headers'
 import { env } from '../../env.mjs'
 import { notFound } from 'next/navigation'

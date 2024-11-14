@@ -1,6 +1,9 @@
-import { getUserProfile } from '@/service/user'
+'use client'
+import { useAuth } from '@/context/app-context'
 
-export default async function Page() {
-    const user = await getUserProfile()
-    return <div></div>
+export default function Page() {
+   const { user } = useAuth()
+   console.log(user)
+
+   return <div></div>
 }
