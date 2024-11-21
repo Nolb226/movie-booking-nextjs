@@ -19,6 +19,7 @@ function Seats({ className, rows, ...props }: SeatsProps) {
       (row: RowSeat) => {
          return Array.from({ length: maxColumn }).map((_, index) => {
             const seat = row.seats.find((seat) => seat.rowIndex === index)
+
             return seat ? (
                <Seat key={seat.id} seat={{ ...seat, rowName: row.rowName }} />
             ) : (
@@ -50,31 +51,18 @@ interface SeatProps extends React.HTMLAttributes<HTMLDivElement> {
    seat: SeatType
 }
 
-function Seat({
-   className,
-   seat: { id, isReserved, order, rowIndex, rowName, status },
-   ...props
-}: SeatProps) {
+function Seat({ className, seat, ...props }: SeatProps) {
    const { selectSeat } = useBookingContext()
    return (
-      <label htmlFor={id}>
+      <label htmlFor={seat.id}>
          <input
-            id={id}
+            id={seat.id}
             type="checkbox"
             className="peer hidden"
-            disabled={isReserved}
+            disabled={seat.isReserved}
          />
          <div
-            onClick={() =>
-               selectSeat({
-                  id,
-                  isReserved,
-                  order,
-                  rowIndex,
-                  rowName,
-                  status,
-               })
-            }
+            onClick={() => selectSeat(seat)}
             className={cn(
                'flex size-7 cursor-pointer select-none items-center justify-center rounded-sm bg-primary-900 ring-1 ring-inset ring-primary-850 hover:ring-highlight-500 peer-checked:bg-highlight-500 peer-checked:ring-highlight-400 peer-disabled:bg-secondary-900 peer-disabled:text-secondary-850',
                className
@@ -82,7 +70,7 @@ function Seat({
             {...props}
          >
             {/* {rowName} */}
-            {rowIndex}
+            {seat.rowIndex}
          </div>
       </label>
    )

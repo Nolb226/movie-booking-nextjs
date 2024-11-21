@@ -6,33 +6,46 @@ import Seats from './seats'
 import Screen from './screen'
 import { useBookingContext } from '@/context/booking-context'
 import { Cinema, CinemaWithMovies } from '@/model/cinema'
+import { formatStartTime } from '@/lib/utils'
+import useSWR from 'swr'
+import { ENDPOINTS } from '@/constants/endpoint'
+import { getShowSeat } from '@/service/show'
+import { Skeleton } from '@/components/ui/skeleton'
 
-interface BookingSeatProps extends React.HTMLAttributes<HTMLDivElement> {
-   data: ShowSeatBooking
-}
+function BookingSeat() {
+   const { currentFormat, currentShow, selectShow } = useBookingContext()
+   const { data, isLoading, mutate } = useSWR(
+      ENDPOINTS.SHOW.SEAT(currentShow!.id),
+      getShowSeat
+   )
 
-function BookingSeat({ data }: BookingSeatProps) {
-   const { selectCinema, selectMovie, full_data } = useBookingContext()
-
-   useEffect(() => {
-      selectCinema(data.hall.cinema as CinemaWithMovies)
-      selectMovie(data.movie)
-   }, [data.movie, selectMovie])
    return (
       <>
-         <div className="flex w-9/12 flex-col justify-center gap-8 rounded-lg bg-white/[4%] ring-1 ring-inset ring-primary-900">
+         <div className="flex flex-1 flex-col justify-center gap-8 rounded-lg bg-white/[4%] ring-1 ring-inset ring-primary-900">
             <div className="flex items-center gap-8 rounded-t-lg bg-primary-900 px-8 py-4 ring-1 ring-inset ring-primary-850">
                <p className="text-xl text-secondary-50">Showtime</p>
-               <div className="flex gap-2.5">
-                  <Button variant={'showtime'}>13:00</Button>
-                  <Button variant={'showtime'}>15:15</Button>
-                  <Button variant={'showtime'}>17:30</Button>
-                  <Button variant={'showtime'}>18:00</Button>
+               <div className="flex flex-wrap gap-2.5">
+                  {currentFormat?.shows.map((show) => (
+                     <Button
+                        key={show.id}
+                        onClick={() => {
+                           selectShow(currentFormat!, show)
+                           mutate()
+                        }}
+                        variant="showtime"
+                     >
+                        {formatStartTime(show.startTime)}
+                     </Button>
+                  ))}
                </div>
             </div>
             <div className="flex flex-col gap-3 px-5.5 pb-8">
                <div className="">
-                  <Seats rows={data.hall.rows} />
+                  {!isLoading ? (
+                     <Seats rows={data!.hall.rows} />
+                  ) : (
+                     <Skeleton className="h-[352px]" />
+                  )}
                </div>
                <Screen />
                <div className="flex items-center gap-4">

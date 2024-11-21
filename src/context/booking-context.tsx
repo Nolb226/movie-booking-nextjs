@@ -4,26 +4,48 @@ import { env } from '../../env.mjs'
 
 import { ENDPOINTS } from '@/constants/endpoint'
 import { Cinema, City, Seat } from '@/model/cinema'
-import { Movie } from '@/model/movie'
+import { Movie, MovieDetails, MovieFormat } from '@/model/movie'
+import { Show } from '@/model/show'
 import { getCinema } from '@/service/cinema'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { getBookingData } from '@/service/movie'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import useSWR from 'swr'
 
 type BookingContextState = {
+   isLoading: boolean
+   currentStep: number
+   isDisable: () => boolean
+   prevStep: () => void
+   nextStep: () => void
+   cities: City[]
+   selectedDay: Date
+   selectDay: (day: Date) => void
+   currentShow: Show | undefined
+   selectShow: (format: MovieFormat, show: Show) => void
+   currentFormat: MovieFormat | undefined
    seats: Seat[]
-   movie: Movie | undefined
-   cinema: (Cinema & { movies: Movie[] }) | undefined
-   full_data: City[]
-
    selectSeat: (seat: Seat) => void
+   currentMovie: Movie | undefined
    selectMovie: (movie: Movie) => void
+   currentCinema: CinemaWithMovies | undefined
    selectCinema: (cinema: CinemaWithMovies) => void
 }
 
 const BookingContext = createContext<BookingContextState>({
+   isLoading: true,
+   isDisable: () => true,
+   currentStep: 1,
+   prevStep: () => {},
+   nextStep: () => {},
+   currentMovie: undefined,
+   currentCinema: undefined,
+   currentShow: undefined,
+   currentFormat: undefined,
+   cities: [],
+   selectedDay: new Date(),
+   selectDay: () => {},
+   selectShow: () => {},
    seats: [],
-   movie: undefined,
-   cinema: undefined,
-   full_data: [],
    selectSeat: () => {},
    selectMovie: () => {},
    selectCinema: () => {},
@@ -38,62 +60,85 @@ interface BookingContextProviderProps {
 type CinemaWithMovies = Cinema & { movies: Movie[] }
 
 const BookingProvider = ({ children }: BookingContextProviderProps) => {
-   const [data, setData] = useState<City[]>([])
-   const [seats, setSeats] = useState<Seat[]>([])
-   const [movie, setMovie] = useState<Movie>()
-   const [isLoading, setIsLoading] = useState<boolean>(true)
+   const {
+      data: cities,
+      error,
+      isLoading,
+   } = useSWR(ENDPOINTS.CINEMA.LIST, getBookingData, {})
+   const [selectedDay, setSelectedDay] = useState<Date>(new Date())
    const [cinema, setCinema] = useState<CinemaWithMovies>()
-
-   const fetchData = async () => {
-      try {
-         const data: City[] = await fetch(
-            `${env.NEXT_PUBLIC_MOVIE_API_URL}/${ENDPOINTS.CINEMA.LIST}`
-         ).then((res) => res.json())
-         setIsLoading(false)
-         setData(data)
-         //  setCinema(data[0].cinemas[0])
-         // setMovie(data[0].cinemas[0]?.movies[0] || {})
-      } catch (error) {
-         console.log(error)
+   const [movie, setMovie] = useState<Movie>()
+   const [format, setFormat] = useState<MovieFormat>()
+   const [show, setShow] = useState<Show>()
+   const [seats, setSeats] = useState<Seat[]>([])
+   const [currentStep, setCurrentStep] = useState<number>(1)
+   const isDisable = () => {
+      switch (currentStep) {
+         case 1: {
+            return !cinema || !movie || !format || !show
+         }
+         case 2:
+            return !seats.length
       }
    }
 
-   const selectSeat = (seat: Seat) => {
-      setSeats((prevSeats) => {
-         const seatExists = prevSeats.some((s) => s.id === seat.id)
-         if (seatExists) {
-            return prevSeats.filter((s) => s.id !== seat.id)
-         } else {
-            return [...prevSeats, seat]
-         }
-      })
+   const nextStep = () => {
+      setCurrentStep(currentStep + 1)
    }
-
-   const selectMovie = (movie: Movie) => {
-      setMovie({ ...movie })
+   const prevStep = () => {
+      setCurrentStep(currentStep - 1)
    }
 
    const selectCinema = (cinema: CinemaWithMovies) => {
-      setCinema({ ...cinema })
-
-      setMovie(undefined)
+      setCinema(cinema)
    }
 
-   useEffect(() => {
-      fetchData()
-   }, [])
+   const selectMovie = (movie: MovieDetails) => {
+      setMovie(movie)
+   }
+
+   const selectShow = (format: MovieFormat, show: Show) => {
+      setShow(show)
+
+      setFormat(() => format)
+   }
+
+   const selectDay = (day: Date) => {
+      setSelectedDay(day)
+   }
+
+   const selectSeat = (seat: Seat) => {
+      setSeats((prev) => {
+         if (prev.some((s) => s.id === seat.id)) {
+            console.log(seat)
+
+            return prev.filter((s) => s.id !== seat.id)
+         }
+         return [...prev, seat]
+      })
+   }
 
    return (
       <BookingContext.Provider
          value={
             {
                seats,
-               movie,
-               cinema,
-               full_data: data,
                selectSeat,
-               selectMovie,
+               cities,
+               isLoading,
+               isDisable,
+               selectShow,
+               currentShow: show,
+               currentFormat: format,
+               selectedDay,
+               selectDay,
+               currentStep,
+               nextStep,
+               prevStep,
+               currentCinema: cinema,
                selectCinema,
+               currentMovie: movie,
+               selectMovie,
             } as BookingContextState
          }
       >

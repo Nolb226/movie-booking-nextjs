@@ -35,6 +35,7 @@ export type Seat = {
    rowName: string
    order: number
    isReserved: boolean
+   seatType: SeatType
 }
 
 export type getCinemaLocation = City & {
@@ -43,4 +44,10 @@ export type getCinemaLocation = City & {
 
 export type CinemaWithMovies = Cinema & {
    movies: Movie[]
+}
+
+export type SeatType = {
+   id: number
+   name: string
+   price: number
 }

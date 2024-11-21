@@ -27,8 +27,23 @@ export function formatTime(time: string) {
    return format(new Date(time))
 }
 
+export const formatDateWeekday = (day: string): string => {
+   const { format } = new Intl.DateTimeFormat('en-US', {
+      weekday: 'long',
+   })
+   return format(new Date(day))
+}
+
 export const formatDuration = (duration: number): string => {
    const hours = Math.floor(duration / 60)
    const minutes = duration % 60
    return `${hours}h ${minutes}m`
+}
+
+export function areDatesEqual(date1: Date, date2: Date): boolean {
+   return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+   )
 }

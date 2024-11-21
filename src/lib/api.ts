@@ -91,7 +91,15 @@ const baseFetch = <T>(
                return
             }
 
-            resolve(response.json())
+            const contentType = response.headers.get('Content-Type') || ''
+            let data: any
+            if (contentType.includes('application/json')) {
+               data = await response.json()
+            } else {
+               data = await response.text()
+            }
+
+            resolve(data)
          } catch (error) {
             reject(error)
          }
