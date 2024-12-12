@@ -1,9 +1,8 @@
-'use client'
-import { useAuth } from '@/context/app-context'
+import InformationPage from '@/components/pages/profile/information-change'
+import { getUserProfile } from '@/service/user'
 
-export default function Page() {
-   const { user } = useAuth()
-   console.log(user)
+export default async function Page() {
+   const user = await getUserProfile()
 
-   return <div></div>
+   return <InformationPage user={user} />
 }

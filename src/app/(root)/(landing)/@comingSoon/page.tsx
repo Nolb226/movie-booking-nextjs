@@ -20,7 +20,7 @@ export default async function Page() {
             </div>
             <div className="">
                <Button variant={'secondary'} className="px-10 py-2">
-                  View All
+                  <Link href={'/movie?status=coming-soon'}>View All</Link>
                </Button>
             </div>
          </div>

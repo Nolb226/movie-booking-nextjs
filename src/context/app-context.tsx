@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       //change user data and force to mutate
       mutate: mutateUserProfile,
    } = useSWR(ENDPOINTS.AUTH.PROFILE, getUserProfile, {
-      shouldRetryOnError: false,
+      //   shouldRetryOnError: false,
    })
    const [user, setUser] = useState<AuthUser | undefined>(undefined)
    useEffect(() => {

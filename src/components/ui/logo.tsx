@@ -1,7 +1,9 @@
+import Link from 'next/link'
+
 export default function Logo() {
-    return (
-        <div>
-            <img src="/images/logo.png" alt="Logo" />
-        </div>
-    )
+   return (
+      <Link href={'/'}>
+         <img src="/images/logo.png" alt="Logo" />
+      </Link>
+   )
 }

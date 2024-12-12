@@ -29,6 +29,7 @@ type BookingContextState = {
    selectMovie: (movie: Movie) => void
    currentCinema: CinemaWithMovies | undefined
    selectCinema: (cinema: CinemaWithMovies) => void
+   toStepTwo: () => void
 }
 
 const BookingContext = createContext<BookingContextState>({
@@ -49,6 +50,7 @@ const BookingContext = createContext<BookingContextState>({
    selectSeat: () => {},
    selectMovie: () => {},
    selectCinema: () => {},
+   toStepTwo: () => {},
 })
 
 export const useBookingContext = () => useContext(BookingContext)
@@ -80,6 +82,10 @@ const BookingProvider = ({ children }: BookingContextProviderProps) => {
          case 2:
             return !seats.length
       }
+   }
+
+   const toStepTwo = () => {
+      setCurrentStep(2)
    }
 
    const nextStep = () => {
@@ -139,6 +145,7 @@ const BookingProvider = ({ children }: BookingContextProviderProps) => {
                selectCinema,
                currentMovie: movie,
                selectMovie,
+               toStepTwo,
             } as BookingContextState
          }
       >

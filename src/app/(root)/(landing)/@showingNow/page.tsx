@@ -19,8 +19,8 @@ export default async function Page() {
                <span className="text-slate-600">Movie in this week</span>
             </div>
             <div className="">
-               <Button variant={'secondary'} className="px-10 py-2">
-                  View All
+               <Button asChild variant={'secondary'} className="px-10 py-2">
+                  <Link href={'/movie'}>View All</Link>
                </Button>
             </div>
          </div>

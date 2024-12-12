@@ -22,7 +22,7 @@ const DateFilter = () => {
       <CarouselItem className="basis-1/6" key={`date-${day.getDay()}-${index}`}>
          <Button
             variant={
-               selectedDay.getTime() === day.getTime() ? 'default' : 'showtime'
+               selectedDay.getDate() === day.getDate() ? 'default' : 'showtime'
             }
             className="flex w-full flex-col"
             onClick={() => handleSelectingDay(day)}

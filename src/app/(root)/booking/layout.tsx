@@ -16,7 +16,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                <Step value="4" label="Confirm" />
             </div>
          </div>
-         <div className="flex flex-col-reverse gap-5.5 lg:flex-row">
+         <div className="flex flex-col-reverse gap-5.5 xl:flex-row">
             {children}
             <Ticket />
          </div>

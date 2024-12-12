@@ -13,7 +13,8 @@ import { getShowSeat } from '@/service/show'
 import { Skeleton } from '@/components/ui/skeleton'
 
 function BookingSeat() {
-   const { currentFormat, currentShow, selectShow } = useBookingContext()
+   const { currentFormat, currentShow, selectedDay, selectShow } =
+      useBookingContext()
    const { data, isLoading, mutate } = useSWR(
       ENDPOINTS.SHOW.SEAT(currentShow!.id),
       getShowSeat
@@ -25,18 +26,32 @@ function BookingSeat() {
             <div className="flex items-center gap-8 rounded-t-lg bg-primary-900 px-8 py-4 ring-1 ring-inset ring-primary-850">
                <p className="text-xl text-secondary-50">Showtime</p>
                <div className="flex flex-wrap gap-2.5">
-                  {currentFormat?.shows.map((show) => (
-                     <Button
-                        key={show.id}
-                        onClick={() => {
-                           selectShow(currentFormat!, show)
-                           mutate()
-                        }}
-                        variant="showtime"
-                     >
-                        {formatStartTime(show.startTime)}
-                     </Button>
-                  ))}
+                  {currentFormat?.shows
+                     .filter((show) => {
+                        const stringDate = `${show.startDate}T${show.startTime}`
+                        const startDate = new Date(stringDate)
+
+                        return startDate.getTime() >= selectedDay.getTime()
+                     })
+                     .map((show) => {
+                        console.log(show)
+
+                        console.log(currentShow?.startDate === show.startDate)
+
+                        if (currentShow?.startDate === show.startDate)
+                           return (
+                              <Button
+                                 key={show.id}
+                                 onClick={() => {
+                                    selectShow(currentFormat!, show)
+                                    mutate()
+                                 }}
+                                 variant="showtime"
+                              >
+                                 {formatStartTime(show.startTime)}
+                              </Button>
+                           )
+                     })}
                </div>
             </div>
             <div className="flex flex-col gap-3 px-5.5 pb-8">

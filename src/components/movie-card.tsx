@@ -14,7 +14,6 @@ function MovieCard({
    poster,
    slug,
    name,
-   rating,
    className,
    ...props
 }: MovieCardProps) {
@@ -35,10 +34,10 @@ function MovieCard({
          </div>
          <div className="flex justify-between">
             <p className="line-clamp-1 text-base md:text-lg">{name}</p>
-            <div className="flex items-center gap-0.5">
+            {/* <div className="flex items-center gap-0.5">
                <Star className="size-4 fill-yellow-400 text-yellow-400" />
                <p className="text-[#C3C3C3]">{rating}</p>
-            </div>
+            </div> */}
          </div>
          <Button className="max-sm:text-base" hasIcon variant="secondary">
             <Ticket className="size-4" />

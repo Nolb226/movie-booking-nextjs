@@ -22,6 +22,7 @@ import {
    DialogTitle,
    DialogTrigger,
 } from '@/components/ui/dialog'
+import Link from 'next/link'
 
 export default async function Page({
    searchParams,
@@ -200,10 +201,12 @@ export default async function Page({
                   </div>
                </div>
                <div className="ml-auto mt-auto flex items-center gap-3">
-                  <Button variant={'secondary'} className="px-4 py-2">
+                  {/* <Button variant={'secondary'} className="px-4 py-2">
                      Chi tiết đặt chỗ
+                  </Button> */}
+                  <Button className="px-4 py-2" asChild>
+                     <Link href={'/'}>Quay lại trang chủ</Link>
                   </Button>
-                  <Button className="px-4 py-2">Quay lại trang chủ</Button>
                </div>
             </div>
          </div>

@@ -1,24 +1,20 @@
-'use client'
 import React from 'react'
 import {
    NavigationMenu,
    NavigationMenuItem,
    NavigationMenuLink,
    NavigationMenuList,
-   navigationMenuTriggerStyle,
 } from '../ui/navigation-menu'
 import Link from 'next/link'
 import SearchBar from '../search-bar'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { NAVIGATIONS } from '@/config/navigation'
-import { Dialog } from '../ui/dialog'
 import { Button } from '../ui/button'
 import ProfileDropdown from '../profile-dropdown'
 import { useAuth } from '@/context/app-context'
+import { cookies } from 'next/headers'
 
 function Header() {
-   const { user, isLoading } = useAuth()
-   // const session = cookies().get('_session')?.value
+   const session = cookies().get('_session')?.value
    return (
       <header className="bg-black">
          <div className="mx-auto flex max-w-[1440px] items-center gap-6 py-4">
@@ -27,7 +23,7 @@ function Header() {
                   <img src="/images/logo.png" alt="" />
                </Link>
             </div>
-            <NavigationMenu>
+            <NavigationMenu className="max-lg:hidden">
                <NavigationMenuList className="flex items-center gap-2">
                   {NAVIGATIONS.map(({ href, label }) => (
                      <NavigationMenuItem key={label}>
@@ -38,8 +34,8 @@ function Header() {
                   ))}
                </NavigationMenuList>
             </NavigationMenu>
-            <SearchBar />
-            {user ? (
+            <SearchBar className="max-lg:hidden" />
+            {session ? (
                <ProfileDropdown />
             ) : (
                <Button variant="secondary" asChild className="text-sm">

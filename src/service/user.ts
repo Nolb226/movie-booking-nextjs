@@ -5,8 +5,8 @@ import { Bill } from '@/model/bill'
 import { Seat } from '@/model/cinema'
 import { User } from '@/model/user'
 
-export const getUserProfile = (url: string) => {
-   return get<AuthUser>(url)
+export const getUserProfile = () => {
+   return get<AuthUser>(ENDPOINTS.AUTH.PROFILE)
 }
 
 export const getUserBill = () => {

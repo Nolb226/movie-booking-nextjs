@@ -1,4 +1,3 @@
-'use client'
 import { getUserProfile } from '@/service/user'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import {
@@ -16,10 +15,8 @@ import Link from 'next/link'
 import LogoutButton from './logout-button'
 import { useAuth } from '@/context/app-context'
 
-export default function ProfileDropdown() {
-   const { user } = useAuth()
-
-   console.log(user)
+export default async function ProfileDropdown() {
+   const user = await getUserProfile()
 
    return (
       <DropdownMenu>
