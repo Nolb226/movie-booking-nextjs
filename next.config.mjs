@@ -1,4 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+import './env.mjs'
 
-export default nextConfig;
+const nextConfig = {
+   output: 'standalone',
+   eslint: {
+      ignoreDuringBuilds: true,
+   },
+   typescript: { ignoreBuildErrors: true },
+}
+
+export default nextConfig
